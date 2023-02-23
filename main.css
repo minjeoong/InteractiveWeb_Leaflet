@@ -1,0 +1,152 @@
+html{
+	font-size: 14px;
+}
+body {
+	
+	font-family: 'Playfair Display', serif;
+	background: url(tablewood.jpg);
+	background-size: auto 130px; /* 원본에서 heigt 만 반으로 쪼갬 */
+	perspective: 1500px;
+}
+.leaflet{
+	position:absolute;  /* 절대 위치인 가운데 */
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	width:30vw;
+	height:30vw;
+	margin: auto; /*마진을 오토로 하면 가운데 정렬*/
+	transform-style: preserve-3d;
+}
+.page{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	font-size: 3rem;
+	transform-style: preserve-3d;
+	transition:1s;
+}
+
+.page:nth-child(1){ /*첫번째 페이지는 왼쪽 기준으로 회전 */
+	z-index: 2;
+	transform-origin: left;
+}
+.page:nth-child(3){ /*세번째 페이지는 오른쪽 기준으로 회전 */
+	z-index: 1;
+	transform-origin: right;
+}
+.page:nth-child(1).page-flipped { 
+	/* 페이지에 마우스를 올리면 180도 회전 (여기서 부호는 앞면으로 열려야함 -> 마이너스)*/
+	transform: rotateY(-150deg);
+}
+.page:nth-child(3).page-flipped { 
+	/* 페이지에 마우스를 올리면 180도 회전 (여기서 부호는 앞면으로 열려야함 -> 마이너스)*/
+	transform: rotateY(150deg);
+}
+
+
+.page-face{
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: cornsilk;
+	backface-visibility: hidden;
+}
+.page-face:nth-child(2){
+	transform: rotateY(180deg);
+}
+.page:nth-child(1) .page-face:nth-child(2),
+.page:nth-child(2) .page-face:nth-child(1),
+.page:nth-child(3) .page-face:nth-child(2) {
+	background:  #fff;
+}
+
+
+.cover-page {
+	display: flex;
+	/* 멤버쉽카드 와 스튜디오밀 두 문구가 위 아래로 배치되도록 -> column 형식으로  */
+	flex-direction: column;
+	/* 위에 있으니깐 중간으로 내려주기 */
+	justify-content: center;
+	/* 왼쪽에 있으니깐 글씨가 . 중간으로 중간정렬 */
+	align-items: center;
+	font-size: 1.5rem;
+}
+.cover-page::before{
+	content: '';
+	display: block;
+	position:absolute;
+	left: 10px;
+	right: 10px;
+	top: 10px;
+	bottom: 10px;
+	border: 1px solid tan;
+}
+
+.menu-header-title {
+	font-family: 'Courgette', cursive;
+}
+
+.menu-item{
+	top: 6px;
+
+	display: flex;
+	align-items: center;
+	position: relative;
+	padding: 2em;
+	transition: 0.5s;
+	transform-style: preserve-3d; /* 마우스 포인트 인식이 제대로 되도록 추가 */
+}
+.menu-item-info{
+	flex: 1;
+	margin-left: 1em;
+}
+.menu-item-photo {
+	width:20%;
+	padding-bottom: 20%;
+
+	flex-shrink: 0;
+	border-radius:50%;  /* 둥글게 */
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: cover;
+
+}
+.member-info{
+	font-size : 0.6rem;
+}
+.member-name{
+	font-size: 1rem;
+	font-weight: bold;
+}
+.back-btn {
+	display: none;
+	position: absolute; 
+	right:10px;
+	top:10px;
+}
+
+.menu-list {
+	font-size: 0.6rem;
+	transform-style: preserve-3d; /* 마우스 포인트 인식이 제대로 되도록 추가 */
+}
+
+.close-btn{
+	display: none;
+	position: absolute;
+	top: -2rem;
+	right: 10px;
+	font-size: 1.2rem;
+	color:#fff;
+	text-shadow: rgba(0, 0, 0, 0.3)0 1px 0;
+	backface-visibility: hidden; 
+}
+
+.leaflet-opened .close-btn{
+	display: inline-block;
+}
