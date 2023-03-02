@@ -1,9 +1,11 @@
+
 (() => {
+	
 	const leaflet = document.querySelector('.leaflet');
 	const pageElems = document.querySelectorAll('.page');
 	let pageCount = 0;
 	
-
+	let currentMenu;
 
 	function getTarget(elem, className) {
 		
@@ -28,6 +30,42 @@
 		}, 500);
 	}
 
+	function zoomIn(elem) {
+		const rect = elem.getBoundingClientRect();
+		const dx = window.innerWidth/2 - (rect.x + rect.width/2);
+		const dy = window.innerHeight/2 - (rect.y + rect.height/2);
+		let angle;
+		// *1 한 이유는 문자열을 숫자로 바꾸기위해
+		switch(elem.parentNode.parentNode.parentNode.dataset.page*1) {
+			case 1:
+				angle = -30;
+				break;
+			case 2:
+				angle = 0;
+				break;
+			case 3:
+				angle = 30;
+				break;
+		}
+		console.log(elem.parentNode.parentNode.parentNode.dataset.page)
+		// 줌인을 브라우저 폭의 절반정도 : 50 vw
+		document.body.classList.add('zoom-in');
+		leaflet.style.transform = `translate3d(${dx}px, ${dy}px, 50vw) rotateY(${angle}deg)`;
+
+		currentMenu = elem;
+		currentMenu.classList.add('current-menu');
+		
+
+	}
+
+	function zoomOut() {
+		leaflet.style.transform = 'translate3d(0,0,0)';
+		if (currentMenu) {
+			document.body.classList.remove('zoom-in');
+			currentMenu.classList.remove('current-menu');
+			currentMenu = null;
+		}
+	}
 
 	/* 클릭 했을 때 이벤트가 전달하도록 */
 	leaflet.addEventListener('click', e => {
@@ -48,6 +86,18 @@
 		let closeBtnElem = getTarget(e.target, 'close-btn');
 		if (closeBtnElem) {
 			closeLeaflet()
+			zoomOut();
+		}
+
+		let menuItemElem = getTarget(e.target, 'menu-item');
+		if (menuItemElem) {
+			zoomIn(menuItemElem);
+
+		}
+		// 백버튼 눌렀을 때 나오기
+		let backbtn = getTarget(e.target, 'back-btn');
+		if (backbtn) {
+			zoomOut()
 		}
 	});
 
